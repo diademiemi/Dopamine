@@ -1,0 +1,16 @@
+name: Dopamine
+description:   Spigot plugin to manage games on your Minecraft server
+author: diademiemi
+version: 0.0.1
+main: me.diademiemi.dopamine.Dopamine
+api-version: 1.13
+depend: [WorldEdit]
+commands:
+  games:
+    description: Player GUI command for Dopamine
+    usage: /games
+    aliases: [game]
+  dopamine:
+    description: Admin command for Dopamine
+    usage: /dopamine
+    aliases: [dm]
