@@ -1,6 +1,7 @@
 package me.diademiemi.dopamine.gui.menu;
 
 public enum MenuSize {
+    HALF_ROW(5),
     ONE_ROW(9),
     TWO_ROWS(18),
     THREE_ROWS(27),
@@ -16,6 +17,7 @@ public enum MenuSize {
     private MenuSize(int size) {
         this.size = size;
     }
+
     /**
      * @return the size
      */

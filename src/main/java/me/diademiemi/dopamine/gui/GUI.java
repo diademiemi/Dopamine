@@ -1,9 +1,10 @@
 package me.diademiemi.dopamine.gui;
 
-import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.event.inventory.InventoryClickEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class GUI {
     public static HashMap<Player, GUI> guiMap = new HashMap<Player, GUI>();
@@ -29,7 +30,7 @@ public abstract class GUI {
     /**
      * @return all loaded GUIs
      */
-    public static HashMap<Player, GUI> getGuiMap() {
+    public static HashMap<Player, GUI> getGUIMap() {
         return guiMap;
     }
 
@@ -38,16 +39,8 @@ public abstract class GUI {
      * @param player
      * @return the GUI of the given inventory and player
      */
-    public static GUI getGUI(Inventory inventory, Player player) {
+    public static GUI getGUI(Player player) {
         return guiMap.get(player);
-    }
-
-    public void onClick(InventoryClickEvent e) {
-        Player player = (Player) e.getWhoClicked();
-        player.sendMessage(e.toString());
-        if (e.getCurrentItem() != null) {
-            player.sendMessage(e.getCurrentItem().toString());
-        }
     }
 
     public void open() {
@@ -55,11 +48,27 @@ public abstract class GUI {
     }
 
     public void close() {
+        removeGUI(this);
         player.closeInventory();
     }
 
-    public void addButton(int slot, GUIButton button) {
-        inventory.setItem(slot, button.getStack());
+    public GUIButton getButton(int slot) {
+        return buttons.get(slot);
+    }
+
+    public void bakeButtons() {
+        for (Map.Entry<Integer, GUIButton> entry : buttons.entrySet()) {
+            inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
+        }
+    }
+
+    public void updateButton(int slot, GUIButton button) throws IndexOutOfBoundsException {
+        if (slot >= inventory.getSize()) {
+            throw new IndexOutOfBoundsException("Slot is out of bounds");
+        } else {
+            buttons.put(slot, button);
+            inventory.setItem(slot, button.getItemStack());
+        }
     }
 
 }
