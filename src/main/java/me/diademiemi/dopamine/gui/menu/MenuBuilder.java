@@ -26,8 +26,14 @@ public class MenuBuilder {
         return this;
     }
 
-    public MenuBuilder addButton(int slot, GUIButton button) {
-        this.buttons.put(slot, button);
+    public MenuBuilder addButton(GUIButton button, int... slot) {
+        if (slot.length == 0) {
+            buttons.put(buttons.size() + 1, button);
+        } else {
+            for (int i : slot) {
+                buttons.put(i, button);
+            }
+        }
         return this;
     }
 

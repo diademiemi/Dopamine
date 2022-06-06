@@ -10,6 +10,13 @@ import java.util.Arrays;
 public class GUIButton {
     private ItemStack stack;
 
+    public GUIButton() {
+        this.stack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta meta = this.stack.getItemMeta();
+        meta.setDisplayName(" ");
+        this.stack.setItemMeta(meta);
+    }
+
     public GUIButton(String name, Material material, String... lore) {
         stack = new ItemStack(material, 1);
 
