@@ -57,4 +57,6 @@ public class GUIButton {
 
     public void onRightClick(Player p) { }
 
+    public void onItemDrag(Player p, Material m) { }
+
 }

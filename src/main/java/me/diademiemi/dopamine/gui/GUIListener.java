@@ -1,5 +1,6 @@
 package me.diademiemi.dopamine.gui;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,11 +13,12 @@ public class GUIListener implements Listener {
     public void onClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         GUI gui = GUI.getGUI(player);
-        if (gui != null) {
-            e.setCancelled(true);
-            
+        if (gui != null) {            
             if (gui.getButton(e.getRawSlot()) != null) {
-                if (e.isLeftClick()) {
+                e.setCancelled(true);
+                if (e.getCursor().getType() != Material.AIR) {
+                    gui.getButton(e.getRawSlot()).onItemDrag(player, e.getCursor().getType());
+                } else if (e.isLeftClick()) {
                     gui.getButton(e.getRawSlot()).onLeftClick(player);
                 } else if (e.isRightClick()) {
                     gui.getButton(e.getRawSlot()).onRightClick(player);

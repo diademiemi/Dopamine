@@ -50,4 +50,8 @@ public class Game {
         return icon;
     }
 
+    public void setIcon(Material m) {
+        icon = m;
+    }
+
 }
