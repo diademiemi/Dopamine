@@ -7,6 +7,11 @@ import me.diademiemi.dopamine.gui.dialogs.MainDialog;
 import me.diademiemi.dopamine.gui.menu.*;
 
 import org.bukkit.entity.Player;
+
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.regions.Region;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 
@@ -20,7 +25,28 @@ public class GameConfig {
                 GUI.getGUI(p).close();
                 SetIcon.showDialog(p, g);
             }
-        }, 4);
+        }, 2);
+        Region selection;
+        try {
+            WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+            if (worldEdit != null) {
+                selection = worldEdit.getSession(p).getSelection(worldEdit.getSession(p).getSelectionWorld());
+            } else {
+                selection = null;
+            }
+        } catch (Exception e) {
+            selection = null;
+        }
+        if (selection != null) {
+            builder.addButton(new GUIButton("Set Region", Material.WOODEN_AXE, "Set the region of this game", "Requires WorldEdit selection") {
+                @Override
+                public void onLeftClick(Player p) {
+                    g.setRegion(p);
+                }
+            }, 4);
+        } else {
+            builder.addButton(new GUIButton("Set Area", Material.RED_WOOL, "Set the region of this game", "No WorldEdit selection currently active!"), 4);
+        }
         builder.addButton(new GUIButton(), 9, 10, 11, 12, 14, 15, 16, 17);
         builder.addButton(new GUIButton("Return", Material.PINK_GLAZED_TERRACOTTA, "Return to game list") {
             @Override
