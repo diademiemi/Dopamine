@@ -19,6 +19,7 @@ public class GameConfig {
     public static void showDialog(Player p, Game g) {
         MenuBuilder builder = new MenuBuilder("Config for game: " + g.getName());
         builder.setSize(MenuSize.TWO_ROWS);
+        // Set icon button
         builder.addButton(new GUIButton("Set Icon", g.getIcon(), "Set the icon of this game") {
             @Override
             public void onLeftClick(Player p) {
@@ -49,8 +50,17 @@ public class GameConfig {
         } else {
             builder.addButton(new GUIButton("Set Region", Material.RED_WOOL, "Set the region of this game", "No WorldEdit selection currently active!"), 4);
         }
+        builder.addButton(new GUIButton("Game Info", Material.BOOK, "View this games settings") {
+            @Override
+            public void onLeftClick(Player p) {
+                GUI.getGUI(p).close();
+                GameInfo.showDialog(p, g);
+            }
+        }, 0);
+        // Add panes
         builder.addButton(new GUIButton(), 9, 10, 11, 12, 14, 15, 16, 17);
-        builder.addButton(new GUIButton("Return", Material.PINK_GLAZED_TERRACOTTA, "Return to game list") {
+        // Return to game list
+        builder.addButton(new GUIButton("Return", Material.MAGENTA_GLAZED_TERRACOTTA, "Return to game list") {
             @Override
             public void onLeftClick(Player p) {
                 GUI.getGUI(p).close();
