@@ -26,6 +26,7 @@ public class GameConfig {
                 SetIcon.showDialog(p, g);
             }
         }, 2);
+        // Test for WorldEdit selection
         Region selection;
         try {
             WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
@@ -37,6 +38,7 @@ public class GameConfig {
         } catch (Exception e) {
             selection = null;
         }
+        // Show button if there is a WorldEdit selection
         if (selection != null) {
             builder.addButton(new GUIButton("Set Region", Material.WOODEN_AXE, "Set the region of this game", "Requires WorldEdit selection") {
                 @Override
@@ -45,7 +47,7 @@ public class GameConfig {
                 }
             }, 4);
         } else {
-            builder.addButton(new GUIButton("Set Area", Material.RED_WOOL, "Set the region of this game", "No WorldEdit selection currently active!"), 4);
+            builder.addButton(new GUIButton("Set Region", Material.RED_WOOL, "Set the region of this game", "No WorldEdit selection currently active!"), 4);
         }
         builder.addButton(new GUIButton(), 9, 10, 11, 12, 14, 15, 16, 17);
         builder.addButton(new GUIButton("Return", Material.PINK_GLAZED_TERRACOTTA, "Return to game list") {
