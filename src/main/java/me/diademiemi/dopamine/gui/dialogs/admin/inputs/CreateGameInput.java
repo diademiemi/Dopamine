@@ -2,7 +2,7 @@ package me.diademiemi.dopamine.gui.dialogs.inputs;
 
 import org.bukkit.entity.Player;
 
-import me.diademiemi.dopamine.gui.dialogs.game.CreateGameDialog;
+import me.diademiemi.dopamine.gui.dialogs.game.ConfirmCreateGameDialog;
 import me.diademiemi.dopamine.gui.input.Input;
 
 public class CreateGameInput extends Input {
@@ -12,6 +12,6 @@ public class CreateGameInput extends Input {
     }
 
     public void action(String input) {
-        CreateGameDialog.showDialog(player, input);
+        ConfirmCreateGameDialog.showDialog(player, input);
     }
 }

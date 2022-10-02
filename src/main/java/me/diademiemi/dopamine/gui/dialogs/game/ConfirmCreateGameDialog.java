@@ -3,13 +3,13 @@ package me.diademiemi.dopamine.gui.dialogs.game;
 import me.diademiemi.dopamine.game.Game;
 import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
-import me.diademiemi.dopamine.gui.dialogs.MainDialog;
+import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
 import me.diademiemi.dopamine.gui.menu.*;
 
 import org.bukkit.entity.Player;
 import org.bukkit.Material;
 
-public class CreateGameDialog {
+public class ConfirmCreateGameDialog {
     public static void showDialog(Player p, String input) {
         MenuBuilder builder = new MenuBuilder("Confirm game creation");
         builder.setSize(MenuSize.HALF_ROW);
@@ -25,7 +25,7 @@ public class CreateGameDialog {
             @Override
             public void onLeftClick(Player p) {
                 GUI.getGUI(p).close();
-                MainDialog.showDialog(p);
+                MainAdminDialog.showDialog(p);
             }
         }, 3);
         builder.addButton(new GUIButton(), 0, 2, 4);

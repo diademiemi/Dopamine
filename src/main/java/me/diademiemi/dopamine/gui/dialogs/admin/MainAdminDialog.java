@@ -5,11 +5,12 @@ import me.diademiemi.dopamine.gui.GUIButton;
 import me.diademiemi.dopamine.gui.dialogs.game.GameListDialog;
 import me.diademiemi.dopamine.gui.dialogs.inputs.CreateGameInput;
 import me.diademiemi.dopamine.gui.menu.*;
+import me.diademiemi.dopamine.config.*;
 
 import org.bukkit.entity.Player;
 import org.bukkit.Material;
 
-public class MainDialog {
+public class MainAdminDialog {
     public static void showDialog(Player p) {
         MenuBuilder builder = new MenuBuilder("Dopamine");
         builder.setSize(MenuSize.ONE_ROW);
@@ -20,6 +21,15 @@ public class MainDialog {
                 new CreateGameInput(p);
             }
         }, 2);
+
+        builder.addButton(new GUIButton("Save Config", Material.CHEST, 1, "Save configuration to disk") {
+            @Override
+            public void onLeftClick(Player p) {
+                Config.writeConfig();
+                p.sendMessage("Saved!");
+            }
+        }, 8);
+
 
         builder.addButton(new GUIButton("List Games", Material.PAPER, 1) {
             @Override

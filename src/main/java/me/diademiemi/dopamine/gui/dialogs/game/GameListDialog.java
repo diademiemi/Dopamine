@@ -1,9 +1,10 @@
 package me.diademiemi.dopamine.gui.dialogs.game;
 
 import me.diademiemi.dopamine.game.Game;
+import me.diademiemi.dopamine.game.GameList;
 import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
-import me.diademiemi.dopamine.gui.dialogs.MainDialog;
+import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
 import me.diademiemi.dopamine.gui.dialogs.game.admin.GameConfig;
 import me.diademiemi.dopamine.gui.menu.*;
 
@@ -16,7 +17,7 @@ public class GameListDialog {
         builder.setSize(MenuSize.FOUR_ROWS);
 
         int i = 0 + (page * 27);
-        for (Game game : Game.getGames().values()) {
+        for (Game game : GameList.getGames().values()) {
             builder.addButton( new GUIButton(game.getName(), game.getIcon()) {
                 @Override
                 public void onLeftClick(Player p) {
@@ -39,13 +40,13 @@ public class GameListDialog {
             @Override
             public void onLeftClick(Player p) {
                 GUI.getGUI(p).close();
-                MainDialog.showDialog(p);
+                MainAdminDialog.showDialog(p);
             }
         }, 31);
         builder.addButton(new GUIButton("Next page", Material.LIME_STAINED_GLASS_PANE) {
             @Override
             public void onLeftClick(Player p) {
-                if (page < Game.getGames().size() / 27) {
+                if (page < GameList.getGames().size() / 27) {
                     GUI.getGUI(p).close();
                     showDialog(p, page + 1);
                 }

@@ -3,7 +3,7 @@ package me.diademiemi.dopamine.gui.dialogs.game.admin;
 import me.diademiemi.dopamine.game.Game;
 import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
-import me.diademiemi.dopamine.gui.dialogs.MainDialog;
+import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
 import me.diademiemi.dopamine.gui.menu.*;
 
 import org.bukkit.entity.Player;
@@ -64,7 +64,7 @@ public class GameConfig {
             @Override
             public void onLeftClick(Player p) {
                 GUI.getGUI(p).close();
-                MainDialog.showDialog(p);
+                MainAdminDialog.showDialog(p);
             }
         }, 13);
         builder.build(p).open();

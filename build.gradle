@@ -22,13 +22,13 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     /* WorldEdit API Maven Repo */
-    maven { url 'https://maven.sk89q.com/repo/' }
+    maven { url 'https://maven.enginehub.org/repo/' }
 }
 
 dependencies {
      compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
      /* Include WorldEdit API */
-     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.8'
+     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.12'
 }
 
  test {

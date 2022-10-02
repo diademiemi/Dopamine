@@ -1,5 +1,6 @@
 package me.diademiemi.dopamine.game;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -11,16 +12,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.regions.Region;
 
-public class Game {
-    public static HashMap<String, Game> games = new HashMap<String, Game>();
-
-    public static HashMap<String, Game> getGames() {
-        return games;
-    }
-
-    public static Game getGame(String name) {
-        return games.get(name);
-    }
+public class Game implements Serializable {
 
     private String name;
 
@@ -30,17 +22,17 @@ public class Game {
 
     private Material icon;
 
-
     public Game(String name, Material icon, double[][] region, World world) {
         this.name = name;
         this.region = region;
         this.icon = icon;
 
-        games.put(name, this);
+        GameList.addGame(name.toLowerCase(), this);
     }
 
     public Game(String name) {
-        new Game(name, Material.JUKEBOX, new double[][] { { 0, 0, 0 }, { 0, 0, 0 } }, Bukkit.getWorlds().get(0));
+        // new Game(name, Material.JUKEBOX, new double[][] { { 0, 0, 0 }, { 0, 0, 0 } }, Bukkit.getWorlds().get(0));
+        new Game(name, Material.JUKEBOX, null, null);
     }
 
     public Boolean isReady() {
