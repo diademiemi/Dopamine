@@ -45,6 +45,7 @@ public class GameConfig {
                 @Override
                 public void onLeftClick(Player p) {
                     g.setRegion(p);
+                    p.sendMessage("Region set!");
                 }
             }, 4);
         } else {
