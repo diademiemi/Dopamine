@@ -9,6 +9,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -34,23 +35,31 @@ public class Game implements ConfigurationSerializable {
         } else {
             map.put("region", null);
         }
+        map.put("warp", warp);
         return map;
     }
+
+    // This is the constructor that is called when deserializing the object
     public Game(Map<String, Object> map) {
         name = (String) map.get("name");
         icon = (Material) Material.valueOf(map.get("icon").toString());
-        region = new CuboidRegion(
-                BukkitAdapter.adapt(Bukkit.getWorld((String) ((Map<String, Object>) map.get("region")).get("world"))),
-                BlockVector3.at(
-                        (int) ((Map<String, Object>) map.get("region")).get("minX"),
-                        (int) ((Map<String, Object>) map.get("region")).get("minY"),
-                        (int) ((Map<String, Object>) map.get("region")).get("minZ")
-                ),
-                BlockVector3.at(
-                        (int) ((Map<String, Object>) map.get("region")).get("maxX"),
-                        (int) ((Map<String, Object>) map.get("region")).get("maxY"),
-                        (int) ((Map<String, Object>) map.get("region")).get("maxZ")
-                ));
+        if (map.get("region") != null) {
+            region = new CuboidRegion(
+                    BukkitAdapter.adapt(Bukkit.getWorld((String) ((Map<String, Object>) map.get("region")).get("world"))),
+                    BlockVector3.at(
+                            (int) ((Map<String, Object>) map.get("region")).get("minX"),
+                            (int) ((Map<String, Object>) map.get("region")).get("minY"),
+                            (int) ((Map<String, Object>) map.get("region")).get("minZ")
+                    ),
+                    BlockVector3.at(
+                            (int) ((Map<String, Object>) map.get("region")).get("maxX"),
+                            (int) ((Map<String, Object>) map.get("region")).get("maxY"),
+                            (int) ((Map<String, Object>) map.get("region")).get("maxZ")
+                    ));
+        } else {
+            region = null;
+        }
+        warp = (Location) map.get("warp");
     }
 
     private String name;
@@ -59,16 +68,19 @@ public class Game implements ConfigurationSerializable {
 
     private CuboidRegion region;
 
-    public Game(String name, Material icon, CuboidRegion region) {
+    private Location warp;
+
+    public Game(String name, Material icon, CuboidRegion region, Location warp) {
         this.name = name;
         this.region = region;
         this.icon = icon;
+        this.warp = warp;
 
         GameList.addGame(name.toLowerCase(), this);
     }
 
-    public Game(String name) {
-        new Game(name, Material.JUKEBOX, null);
+    public Game(String name, Location warp) {
+        new Game(name, Material.JUKEBOX, null, warp);
     }
 
     public Boolean isReady() {
@@ -124,6 +136,14 @@ public class Game implements ConfigurationSerializable {
 
     public void setIcon(Material m) {
         icon = m;
+    }
+
+    public Location getWarp() {
+        return warp;
+    }
+
+    public void setWarp(Location l) {
+        warp = l;
     }
 
 }

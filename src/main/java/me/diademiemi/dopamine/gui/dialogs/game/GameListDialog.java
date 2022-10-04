@@ -18,13 +18,32 @@ public class GameListDialog {
 
         int i = 0 + (page * 27);
         for (Game game : GameList.getGames().values()) {
-            builder.addButton( new GUIButton(game.getName(), game.getIcon()) {
-                @Override
-                public void onLeftClick(Player p) {
-                    GUI.getGUI(p).close();
-                    GameConfig.showDialog(p, game);
-                }
-            }, i);
+
+            if (p.hasPermission("dopamine.config.games")) {
+                builder.addButton( new GUIButton(game.getName(), game.getIcon(), "Right click to configure this game") {
+
+                    @Override
+                    public void onLeftClick(Player p) {
+                        GUI.getGUI(p).close();
+                        p.teleport(game.getWarp());
+                    }
+                    @Override
+                    public void onRightClick(Player p) {
+                        GUI.getGUI(p).close();
+                        GameConfig.showDialog(p, game);
+                    }
+                }, i);
+            } else {
+                builder.addButton( new GUIButton(game.getName(), game.getIcon()) {
+
+                    @Override
+                    public void onLeftClick(Player p) {
+                        GUI.getGUI(p).close();
+                        p.teleport(game.getWarp());
+                    }
+                }, i);
+            }
+
             i++;
         }
         builder.addButton(new GUIButton("Previous page", Material.RED_STAINED_GLASS_PANE) {

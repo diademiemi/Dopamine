@@ -16,7 +16,7 @@ public class ConfirmCreateGameDialog {
         builder.addButton( new GUIButton("Confirm", Material.LIME_WOOL, "Your input was: ", input) {
             @Override
             public void onLeftClick(Player p) {
-                new Game(input);
+                new Game(input, p.getLocation());
                 GUI.getGUI(p).close();
                 GameListDialog.showDialog(p, 0);
             }
