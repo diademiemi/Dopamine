@@ -1,19 +1,17 @@
 package me.diademiemi.dopamine.game;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Game implements ConfigurationSerializable {
@@ -21,6 +19,7 @@ public class Game implements ConfigurationSerializable {
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
+        map.put("position", position);
         map.put("icon", icon.name());
         if (region != null) {
             Map<String, Object> regionMap = new HashMap<String, Object>();
@@ -42,6 +41,17 @@ public class Game implements ConfigurationSerializable {
     // This is the constructor that is called when deserializing the object
     public Game(Map<String, Object> map) {
         name = (String) map.get("name");
+        if (map.get("position") != null) {
+            position = (Integer) map.get("position");
+        } else {
+            // Fallback for if the position is null
+            int i = 0;
+            while (GameList.getGame(i) != null) {
+                i++;
+            }
+            position = i;
+        }
+        GameList.setGamePosition(name.toLowerCase(), position);
         icon = (Material) Material.valueOf(map.get("icon").toString());
         if (map.get("region") != null) {
             region = new CuboidRegion(
@@ -64,14 +74,17 @@ public class Game implements ConfigurationSerializable {
 
     private String name;
 
+    private Integer position;
+
     private Material icon;
 
     private CuboidRegion region;
 
     private Location warp;
 
-    public Game(String name, Material icon, CuboidRegion region, Location warp) {
+    public Game(String name, int position, Material icon, CuboidRegion region, Location warp) {
         this.name = name;
+        this.position = position;
         this.region = region;
         this.icon = icon;
         this.warp = warp;
@@ -80,7 +93,14 @@ public class Game implements ConfigurationSerializable {
     }
 
     public Game(String name, Location warp) {
-        new Game(name, Material.JUKEBOX, null, warp);
+        int i = 0;
+        while (GameList.getGame(i) != null) {
+            i++;
+        }
+
+        new Game(name, i, Material.JUKEBOX, null, warp);
+
+        GameList.setGamePosition(name.toLowerCase(), i);
     }
 
     public Boolean isReady() {
@@ -144,6 +164,14 @@ public class Game implements ConfigurationSerializable {
 
     public void setWarp(Location l) {
         warp = l;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
 }

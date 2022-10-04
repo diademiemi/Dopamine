@@ -6,8 +6,8 @@ import me.diademiemi.dopamine.game.GameList;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.*;
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
 
 public class Config {
 

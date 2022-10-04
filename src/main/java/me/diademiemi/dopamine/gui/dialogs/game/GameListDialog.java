@@ -6,18 +6,27 @@ import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
 import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
 import me.diademiemi.dopamine.gui.dialogs.game.admin.GameConfig;
-import me.diademiemi.dopamine.gui.menu.*;
-
-import org.bukkit.entity.Player;
+import me.diademiemi.dopamine.gui.menu.MenuBuilder;
+import me.diademiemi.dopamine.gui.menu.MenuSize;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 public class GameListDialog {
     public static void showDialog(Player p, int page) {
         MenuBuilder builder = new MenuBuilder("List of games");
         builder.setSize(MenuSize.FOUR_ROWS);
 
-        int i = 0 + (page * 27);
-        for (Game game : GameList.getGames().values()) {
+        for (int i : GameList.getGameOrder().keySet()) {
+
+            if (i >= 27 + (page * 27)) {
+                break;
+            }
+
+            Game game = GameList.getGame(i);
+
+            if (game == null) {
+                break;
+            }
 
             if (p.hasPermission("dopamine.config.games")) {
                 builder.addButton( new GUIButton(game.getName(), game.getIcon(), "Right click to configure this game") {

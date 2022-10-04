@@ -1,18 +1,16 @@
 package me.diademiemi.dopamine.gui.dialogs.game.admin;
 
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.regions.Region;
 import me.diademiemi.dopamine.game.Game;
 import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
 import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
-import me.diademiemi.dopamine.gui.menu.*;
-
-import org.bukkit.entity.Player;
-
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.regions.Region;
-
+import me.diademiemi.dopamine.gui.menu.MenuBuilder;
+import me.diademiemi.dopamine.gui.menu.MenuSize;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 
 public class GameConfig {
@@ -28,7 +26,7 @@ public class GameConfig {
             }
         }, 0);
         // 3rd Slot
-        builder.addButton(new GUIButton("Set Icon", g.getIcon(), "Set the icon of this game") {
+        builder.addButton(new GUIButton("Set Icon", Material.PAINTING, "Set the icon of this game") {
             @Override
             public void onLeftClick(Player p) {
                 GUI.getGUI(p).close();
