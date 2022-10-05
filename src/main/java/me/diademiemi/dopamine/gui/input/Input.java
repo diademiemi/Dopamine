@@ -20,7 +20,6 @@ public abstract class Input {
         addInput(this);
     }
 
-
     public static HashMap<Player, Input> getInputs() {
         return inputs;
     }

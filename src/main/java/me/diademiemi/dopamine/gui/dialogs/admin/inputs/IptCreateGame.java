@@ -5,9 +5,9 @@ import org.bukkit.entity.Player;
 import me.diademiemi.dopamine.gui.dialogs.game.admin.DgConfirmCreateGame;
 import me.diademiemi.dopamine.gui.input.Input;
 
-public class CreateGameInput extends Input {
+public class IptCreateGame extends Input {
 
-    public CreateGameInput(Player player) {
+    public IptCreateGame(Player player) {
         super(player, "Please enter the name of the game you want to create:");
     }
 

@@ -1,12 +1,11 @@
 package me.diademiemi.dopamine.gui.dialogs.admin;
 
 import me.diademiemi.dopamine.config.Config;
-import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
 import me.diademiemi.dopamine.gui.dialogs.Dialog;
 import me.diademiemi.dopamine.gui.dialogs.game.DgGameList;
 import me.diademiemi.dopamine.gui.dialogs.game.admin.DgReorderGameList;
-import me.diademiemi.dopamine.gui.dialogs.admin.inputs.CreateGameInput;
+import me.diademiemi.dopamine.gui.dialogs.admin.inputs.IptCreateGame;
 import me.diademiemi.dopamine.gui.menu.Menu;
 import me.diademiemi.dopamine.gui.menu.MenuBuilder;
 import me.diademiemi.dopamine.gui.menu.MenuSize;
@@ -22,7 +21,7 @@ public class DgMainAdmin implements Dialog {
             @Override
             public void onLeftClick(Player p) {
                 close(p);
-                new CreateGameInput(p);
+                new IptCreateGame(p);
             }
         }, 2);
 
