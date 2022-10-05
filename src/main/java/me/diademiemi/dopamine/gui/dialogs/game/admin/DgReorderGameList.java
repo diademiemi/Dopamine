@@ -34,7 +34,17 @@ public class DgReorderGameList implements Dialog {
         MenuBuilder builder = new MenuBuilder("List of games");
         builder.setSize(MenuSize.FOUR_ROWS);
 
-        for (int i = 0; i < 27 + (page * 27); i++) {
+        boolean hasPrev = page > 0;
+        boolean pageIsEmpty = true;
+
+        for (int i = page * 27; i < (page + 1) * 27; i++) {
+            if (GameList.getGame(i) != null) {
+                pageIsEmpty = false;
+                break;
+            }
+        }
+
+        for (int i = page * 27; i < 27 + (page * 27); i++) {
 
             String g = uncommittedChanges.get(i);
 
@@ -63,7 +73,7 @@ public class DgReorderGameList implements Dialog {
                         }
                         show(p, page);
                     }
-                }, i);
+                }, i - (page * 27));
             } else {
                 if (playerSelection.containsKey(p.getUniqueId())) {
                     int finalI = i;
@@ -77,19 +87,21 @@ public class DgReorderGameList implements Dialog {
                             playerSelection.remove(p.getUniqueId());
                             show(p, page);
                         }
-                    }, i);
+                    }, i - (page * 27));
                 }
             }
         }
 
-        builder.addButton(new GUIButton("Previous page", Material.RED_STAINED_GLASS_PANE) {
-            @Override
-            public void onLeftClick(Player p) {
-                if (page > 0) {
+        if (hasPrev) {
+            builder.addButton(new GUIButton("Previous page", Material.RED_STAINED_GLASS_PANE) {
+                @Override
+                public void onLeftClick(Player p) {
                     show(p, page - 1);
                 }
-            }
-        }, 28);
+            }, 28);
+        } else {
+            builder.addButton(new GUIButton(), 28);
+        }
 
         if (playerSelection.containsKey(p.getUniqueId())) {
             builder.addButton(new GUIButton(GameList.getGame(playerSelection.get(p.getUniqueId())).getName(), GameList.getGame(playerSelection.get(p.getUniqueId())).getIcon(), "Current selection", "Click to unselect") {
@@ -137,14 +149,18 @@ public class DgReorderGameList implements Dialog {
             builder.addButton(new GUIButton(), 32);
         }
 
-        builder.addButton(new GUIButton("Next page", Material.LIME_STAINED_GLASS_PANE) {
-            @Override
-            public void onLeftClick(Player p) {
-                if (page < GameList.getGames().size() / 27) {
+        if (!pageIsEmpty) {
+            builder.addButton(new GUIButton("Next page", Material.GREEN_STAINED_GLASS_PANE) {
+                @Override
+                public void onLeftClick(Player p) {
                     show(p, page + 1);
                 }
-            }
-        }, 34);
+            }, 34);
+        } else {
+            // blank
+            builder.addButton(new GUIButton(), 34);
+        }
+
         builder.addButton(new GUIButton(), 27, 29, 33, 35);
 
         return builder.build(p);

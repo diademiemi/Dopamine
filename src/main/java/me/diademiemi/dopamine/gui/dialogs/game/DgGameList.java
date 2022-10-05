@@ -20,17 +20,29 @@ public class DgGameList implements Dialog {
         MenuBuilder builder = new MenuBuilder("Game List");
         builder.setSize(MenuSize.FOUR_ROWS);
 
+        boolean hasPrev = page > 0;
+        boolean hasNext = false;
+
+        for (int i = (page + 1) * 27; i < ((page + 2) * 27); i++) {
+            if (GameList.getGame(i) != null) {
+                hasNext = true;
+                break;
+            }
+        }
+
         for (int i : GameList.getGameOrder().keySet()) {
 
-            if (i >= 27 + (page * 27)) {
-                break;
+            // Break if outside of page range
+            if (i < page * 27 || i >= (page + 1) * 27) {
+                continue;
             }
 
             Game game = GameList.getGame(i);
 
             if (game == null) {
-                break;
+                continue;
             }
+
 
             if (player.hasPermission("dopamine.config.games")) {
                 builder.addButton( new GUIButton(game.getName(), game.getIcon(), "Right click to configure this game") {
@@ -44,7 +56,7 @@ public class DgGameList implements Dialog {
                     public void onRightClick(Player p) {
                         new DgGameConfig().show(p, game);
                     }
-                }, i);
+                }, i - (page * 27));
             } else {
                 builder.addButton( new GUIButton(game.getName(), game.getIcon()) {
 
@@ -58,14 +70,17 @@ public class DgGameList implements Dialog {
 
             i++;
         }
-        builder.addButton(new GUIButton("Previous page", Material.RED_STAINED_GLASS_PANE) {
-            @Override
-            public void onLeftClick(Player p) {
-                if (page > 0) {
+        if (hasPrev) {
+            builder.addButton(new GUIButton("Previous page", Material.RED_STAINED_GLASS_PANE) {
+                @Override
+                public void onLeftClick(Player p) {
                     show(p, page - 1);
                 }
-            }
-        }, 28);
+            }, 28);
+        } else {
+            builder.addButton(new GUIButton(), 28);
+        }
+
         builder.addButton(new GUIButton("Return to main menu", Material.BARRIER) {
             @Override
             public void onLeftClick(Player p) {
@@ -73,14 +88,19 @@ public class DgGameList implements Dialog {
                 new DgMainAdmin().show(p);
             }
         }, 31);
-        builder.addButton(new GUIButton("Next page", Material.LIME_STAINED_GLASS_PANE) {
-            @Override
-            public void onLeftClick(Player p) {
-                if (page < GameList.getGames().size() / 27) {
+
+        if (hasNext) {
+            builder.addButton(new GUIButton("Next page", Material.GREEN_STAINED_GLASS_PANE) {
+                @Override
+                public void onLeftClick(Player p) {
                     show(p, page + 1);
                 }
-            }
-        }, 34);
+            }, 34);
+        } else {
+            // blank
+            builder.addButton(new GUIButton(), 34);
+        }
+
         builder.addButton(new GUIButton(), 27, 29, 30, 32, 33, 35);
 
 
