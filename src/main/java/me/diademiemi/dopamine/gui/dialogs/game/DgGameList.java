@@ -4,16 +4,20 @@ import me.diademiemi.dopamine.game.Game;
 import me.diademiemi.dopamine.game.GameList;
 import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
-import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
-import me.diademiemi.dopamine.gui.dialogs.game.admin.GameConfig;
+import me.diademiemi.dopamine.gui.dialogs.admin.DgMainAdmin;
+import me.diademiemi.dopamine.gui.dialogs.Dialog;
+import me.diademiemi.dopamine.gui.dialogs.game.admin.DgGameConfig;
+import me.diademiemi.dopamine.gui.menu.Menu;
 import me.diademiemi.dopamine.gui.menu.MenuBuilder;
 import me.diademiemi.dopamine.gui.menu.MenuSize;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class GameListDialog {
-    public static void showDialog(Player p, int page) {
-        MenuBuilder builder = new MenuBuilder("List of games");
+public class DgGameList implements Dialog {
+    @Override
+    public Menu create(Player player, Object... args) {
+        int page = (int) args[0];
+        MenuBuilder builder = new MenuBuilder("Game List");
         builder.setSize(MenuSize.FOUR_ROWS);
 
         for (int i : GameList.getGameOrder().keySet()) {
@@ -28,18 +32,17 @@ public class GameListDialog {
                 break;
             }
 
-            if (p.hasPermission("dopamine.config.games")) {
+            if (player.hasPermission("dopamine.config.games")) {
                 builder.addButton( new GUIButton(game.getName(), game.getIcon(), "Right click to configure this game") {
 
                     @Override
                     public void onLeftClick(Player p) {
-                        GUI.getGUI(p).close();
+                        close(p);
                         p.teleport(game.getWarp());
                     }
                     @Override
                     public void onRightClick(Player p) {
-                        GUI.getGUI(p).close();
-                        GameConfig.showDialog(p, game);
+                        new DgGameConfig().show(p, game);
                     }
                 }, i);
             } else {
@@ -47,7 +50,7 @@ public class GameListDialog {
 
                     @Override
                     public void onLeftClick(Player p) {
-                        GUI.getGUI(p).close();
+                        close(p);
                         p.teleport(game.getWarp());
                     }
                 }, i);
@@ -59,30 +62,28 @@ public class GameListDialog {
             @Override
             public void onLeftClick(Player p) {
                 if (page > 0) {
-                    GUI.getGUI(p).close();
-                    showDialog(p, page - 1);
+                    show(p, page - 1);
                 }
             }
         }, 28);
         builder.addButton(new GUIButton("Return to main menu", Material.BARRIER) {
             @Override
             public void onLeftClick(Player p) {
-                GUI.getGUI(p).close();
-                MainAdminDialog.showDialog(p);
+                close(p);
+                new DgMainAdmin().show(p);
             }
         }, 31);
         builder.addButton(new GUIButton("Next page", Material.LIME_STAINED_GLASS_PANE) {
             @Override
             public void onLeftClick(Player p) {
                 if (page < GameList.getGames().size() / 27) {
-                    GUI.getGUI(p).close();
-                    showDialog(p, page + 1);
+                    show(p, page + 1);
                 }
             }
         }, 34);
         builder.addButton(new GUIButton(), 27, 29, 30, 32, 33, 35);
 
 
-        builder.build(p).open();
+        return builder.build(player);
     }
 }

@@ -3,7 +3,9 @@ package me.diademiemi.dopamine.gui.dialogs.game.admin;
 import me.diademiemi.dopamine.game.GameList;
 import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
-import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
+import me.diademiemi.dopamine.gui.dialogs.admin.DgMainAdmin;
+import me.diademiemi.dopamine.gui.dialogs.Dialog;
+import me.diademiemi.dopamine.gui.menu.Menu;
 import me.diademiemi.dopamine.gui.menu.MenuBuilder;
 import me.diademiemi.dopamine.gui.menu.MenuSize;
 import org.bukkit.Material;
@@ -12,7 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ReorderGameList {
+public class DgReorderGameList implements Dialog {
 
     private static Boolean changed = false;
 
@@ -20,7 +22,10 @@ public class ReorderGameList {
 
     private static HashMap<UUID, String> playerSelection = new HashMap<UUID, String>();
 
-    public static void showDialog(Player p, int page) {
+    @Override
+    public Menu create(Player p, Object... args) {
+        int page = (int) args[0];
+
 
         if (uncommittedChanges == null) {
             uncommittedChanges = (HashMap<Integer, String>) GameList.getGameOrder().clone();
@@ -29,8 +34,7 @@ public class ReorderGameList {
         MenuBuilder builder = new MenuBuilder("List of games");
         builder.setSize(MenuSize.FOUR_ROWS);
 
-        int i = 0 + (page * 27);
-        for (i = 0; i < 27 + (page * 27); i++) {
+        for (int i = 0; i < 27 + (page * 27); i++) {
 
             String g = uncommittedChanges.get(i);
 
@@ -57,8 +61,7 @@ public class ReorderGameList {
                             // Select
                             playerSelection.put(p.getUniqueId(), g);
                         }
-                        GUI.getGUI(p).close();
-                        showDialog(p, page);
+                        show(p, page);
                     }
                 }, i);
             } else {
@@ -72,8 +75,7 @@ public class ReorderGameList {
                             uncommittedChanges.put(finalI, oldSlot);
                             changed = true;
                             playerSelection.remove(p.getUniqueId());
-                            GUI.getGUI(p).close();
-                            showDialog(p, page);
+                            show(p, page);
                         }
                     }, i);
                 }
@@ -84,8 +86,7 @@ public class ReorderGameList {
             @Override
             public void onLeftClick(Player p) {
                 if (page > 0) {
-                    GUI.getGUI(p).close();
-                    showDialog(p, page - 1);
+                    show(p, page - 1);
                 }
             }
         }, 28);
@@ -95,8 +96,7 @@ public class ReorderGameList {
                 @Override
                 public void onLeftClick(Player p) {
                     playerSelection.remove(p.getUniqueId());
-                    GUI.getGUI(p).close();
-                    showDialog(p, page);
+                    show(p, page);
                 }
             }, 30);
         } else if (changed) {
@@ -106,8 +106,7 @@ public class ReorderGameList {
                     playerSelection.clear();
                     uncommittedChanges = null;
                     changed = false;
-                    GUI.getGUI(p).close();
-                    showDialog(p, page);
+                    show(p, page);
                 }
             }, 30);
         } else {
@@ -118,21 +117,19 @@ public class ReorderGameList {
         builder.addButton(new GUIButton("Return to main menu", Material.BARRIER) {
             @Override
             public void onLeftClick(Player p) {
-                GUI.getGUI(p).close();
-                MainAdminDialog.showDialog(p);
+                new DgMainAdmin().show(p);
             }
         }, 31);
 
         if (!playerSelection.containsKey(p.getUniqueId()) && changed) {
-            builder.addButton(new GUIButton("Commit changes", Material.LEVER) {
+            builder.addButton(new GUIButton("Commit changes", Material.FIREWORK_ROCKET) {
                 @Override
                 public void onLeftClick(Player p) {
                     playerSelection.clear();
                     GameList.setGameOrder(uncommittedChanges);
                     p.sendMessage("Changes committed");
                     changed = false;
-                    GUI.getGUI(p).close();
-                    showDialog(p, page);
+                    show(p, page);
                 }
             }, 32);
         } else {
@@ -144,14 +141,12 @@ public class ReorderGameList {
             @Override
             public void onLeftClick(Player p) {
                 if (page < GameList.getGames().size() / 27) {
-                    GUI.getGUI(p).close();
-                    showDialog(p, page + 1);
+                    show(p, page + 1);
                 }
             }
         }, 34);
         builder.addButton(new GUIButton(), 27, 29, 33, 35);
 
-
-        builder.build(p).open();
+        return builder.build(p);
     }
 }

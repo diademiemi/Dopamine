@@ -4,7 +4,7 @@ import me.diademiemi.dopamine.config.Config;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 
-import me.diademiemi.dopamine.gui.dialogs.MainAdminDialog;
+import me.diademiemi.dopamine.gui.dialogs.admin.DgMainAdmin;
 
 public class CommandHandler implements CommandExecutor {
 
@@ -12,7 +12,7 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(org.bukkit.command.CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length == 0) {
-                MainAdminDialog.showDialog((Player) sender);
+                new DgMainAdmin().show((Player) sender);
             } else if (args.length == 1) {
                 switch (args[0]) {
                     case "save":
