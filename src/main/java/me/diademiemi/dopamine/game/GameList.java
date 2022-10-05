@@ -19,7 +19,7 @@ public class GameList {
     public static void setGameOrder(HashMap<Integer, String> gameOrder) {
         for (int i : gameOrder.keySet()) {
             if (gameOrder.get(i) != null) {
-                games.get(GameList.gameOrder.get(i)).setPosition(i);
+                games.get(gameOrder.get(i)).setPosition(i);
             }
         }
         GameList.gameOrder = gameOrder;

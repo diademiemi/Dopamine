@@ -16,14 +16,14 @@ public class ReorderGameList {
 
     private static Boolean changed = false;
 
-    private static HashMap<Integer, String> uncommitedChanges;
+    private static HashMap<Integer, String> uncommittedChanges;
 
     private static HashMap<UUID, String> playerSelection = new HashMap<UUID, String>();
 
     public static void showDialog(Player p, int page) {
 
-        if (uncommitedChanges == null) {
-            uncommitedChanges = GameList.getGameOrder();
+        if (uncommittedChanges == null) {
+            uncommittedChanges = (HashMap<Integer, String>) GameList.getGameOrder().clone();
         }
 
         MenuBuilder builder = new MenuBuilder("List of games");
@@ -32,7 +32,7 @@ public class ReorderGameList {
         int i = 0 + (page * 27);
         for (i = 0; i < 27 + (page * 27); i++) {
 
-            String g = uncommitedChanges.get(i);
+            String g = uncommittedChanges.get(i);
 
             if (g != null) {
                 builder.addButton( new GUIButton(GameList.getGame(g).getName(), GameList.getGame(g).getIcon(), "Click to select this game", "Then click the slot you want to swap it with") {
@@ -46,10 +46,10 @@ public class ReorderGameList {
                             } else {
                                 // Swap spaces
                                 String oldSlot = playerSelection.get(p.getUniqueId());
-                                int oldSlotIndex = GameList.getGameIndex(oldSlot, uncommitedChanges);
-                                int newSlotIndex = GameList.getGameIndex(g, uncommitedChanges);
-                                uncommitedChanges.put(oldSlotIndex, g);
-                                uncommitedChanges.put(newSlotIndex, oldSlot);
+                                int oldSlotIndex = GameList.getGameIndex(oldSlot, uncommittedChanges);
+                                int newSlotIndex = GameList.getGameIndex(g, uncommittedChanges);
+                                uncommittedChanges.put(oldSlotIndex, g);
+                                uncommittedChanges.put(newSlotIndex, oldSlot);
                                 changed = true;
                                 playerSelection.remove(p.getUniqueId());
                             }
@@ -68,8 +68,8 @@ public class ReorderGameList {
                         @Override
                         public void onLeftClick(Player p) {
                             String oldSlot = playerSelection.get(p.getUniqueId());
-                            uncommitedChanges.remove(GameList.getGameIndex(oldSlot, uncommitedChanges));
-                            uncommitedChanges.put(finalI, oldSlot);
+                            uncommittedChanges.remove(GameList.getGameIndex(oldSlot, uncommittedChanges));
+                            uncommittedChanges.put(finalI, oldSlot);
                             changed = true;
                             playerSelection.remove(p.getUniqueId());
                             GUI.getGUI(p).close();
@@ -99,6 +99,17 @@ public class ReorderGameList {
                     showDialog(p, page);
                 }
             }, 30);
+        } else if (changed) {
+            builder.addButton(new GUIButton("Discard changes", Material.TNT) {
+                @Override
+                public void onLeftClick(Player p) {
+                    playerSelection.clear();
+                    uncommittedChanges = null;
+                    changed = false;
+                    GUI.getGUI(p).close();
+                    showDialog(p, page);
+                }
+            }, 30);
         } else {
             // blank
             builder.addButton(new GUIButton(), 30);
@@ -117,7 +128,7 @@ public class ReorderGameList {
                 @Override
                 public void onLeftClick(Player p) {
                     playerSelection.clear();
-                    GameList.setGameOrder(uncommitedChanges);
+                    GameList.setGameOrder(uncommittedChanges);
                     p.sendMessage("Changes committed");
                     changed = false;
                     GUI.getGUI(p).close();
