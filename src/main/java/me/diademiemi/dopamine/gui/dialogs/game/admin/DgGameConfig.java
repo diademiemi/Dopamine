@@ -1,8 +1,10 @@
 package me.diademiemi.dopamine.gui.dialogs.game.admin;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import me.diademiemi.dopamine.game.Game;
+import me.diademiemi.dopamine.game.GameList;
 import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
 import me.diademiemi.dopamine.gui.dialogs.Dialog;
@@ -45,26 +47,31 @@ public class DgGameConfig implements Dialog {
         }, 3);
 
         // Test for WorldEdit selection
-        Region selection;
+        CuboidRegion selection = null;
         try {
             WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
             if (worldEdit != null) {
-                selection = worldEdit.getSession(p).getSelection(worldEdit.getSession(p).getSelectionWorld());
-            } else {
-                selection = null;
+                selection = (CuboidRegion) worldEdit.getSession(p).getSelection(worldEdit.getSession(p).getSelectionWorld());
             }
         } catch (Exception e) {
             selection = null;
         }
+
         // 5th Slot
         if (selection != null) {
-            builder.addButton(new GUIButton("Set Region", Material.WOODEN_AXE, "Set the region of this game", "Requires WorldEdit selection") {
-                @Override
-                public void onLeftClick(Player p) {
-                    game.setRegion(p);
-                    p.sendMessage("Region set!");
-                }
-            }, 4);
+            // Check if region overlaps with any other game
+            Game overlaps = GameList.getGameByRegion(selection, game);
+            if (overlaps != null) {
+                builder.addButton(new GUIButton("Set Region", Material.BARRIER, "Set the region of this game", "This region overlaps with " + overlaps.getName()), 4);
+            } else {
+                builder.addButton(new GUIButton("Set Region", Material.WOODEN_AXE, "Set the region of this game") {
+                    @Override
+                    public void onLeftClick(Player p) {
+                        game.setRegion(p);
+                        p.sendMessage("Region set!");
+                    }
+                }, 4);
+            }
         } else {
             builder.addButton(new GUIButton("Set Region", Material.BARRIER, "Set the region of this game", "No WorldEdit selection currently active!"), 4);
         }

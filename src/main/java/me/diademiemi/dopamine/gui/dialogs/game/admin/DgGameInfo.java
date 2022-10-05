@@ -19,7 +19,7 @@ public class DgGameInfo implements Dialog {
         builder.setSize(MenuSize.TWO_ROWS);
         Region region = game.getRegion();
         if (region != null) {
-                builder.addButton(new GUIButton("Region", Material.GRASS_BLOCK, "Region: ", region.getMinimumPoint().getX() + ", " + region.getMinimumPoint().getY() + ", " + region.getMinimumPoint().getZ() + " - " + region.getMaximumPoint().getX() + ", " + region.getMaximumPoint().getY() + ", " + region.getMaximumPoint().getZ()) {
+                builder.addButton(new GUIButton("Region", Material.GRASS_BLOCK, "Region: ", region.getMinimumPoint().getX() + ", " + region.getMinimumPoint().getY() + ", " + region.getMinimumPoint().getZ(), "=> " + region.getMaximumPoint().getX() + ", " + region.getMaximumPoint().getY() + ", " + region.getMaximumPoint().getZ()) {
                 @Override
                 public void onLeftClick(Player p) {
                     new DgGameConfig().show(p, game);

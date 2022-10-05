@@ -136,7 +136,7 @@ public class Game implements ConfigurationSerializable {
         }
 
         if (selection != null) {
-            this.region = selection;
+            this.region = selection.clone();
         }
     }
 
