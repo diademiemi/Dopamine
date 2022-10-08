@@ -1,13 +1,16 @@
 package me.diademiemi.dopamine.gui.dialogs.game.admin;
 
+import me.diademiemi.dopamine.game.Game;
 import me.diademiemi.dopamine.game.GameList;
-import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
-import me.diademiemi.dopamine.gui.dialogs.admin.DgMainAdmin;
 import me.diademiemi.dopamine.gui.dialogs.Dialog;
+import me.diademiemi.dopamine.gui.dialogs.admin.DgMainAdmin;
 import me.diademiemi.dopamine.gui.menu.Menu;
 import me.diademiemi.dopamine.gui.menu.MenuBuilder;
 import me.diademiemi.dopamine.gui.menu.MenuSize;
+import me.diademiemi.dopamine.lang.Button;
+import me.diademiemi.dopamine.lang.Message;
+import me.diademiemi.dopamine.lang.Title;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -31,7 +34,7 @@ public class DgReorderGameList implements Dialog {
             uncommittedChanges = (HashMap<Integer, String>) GameList.getGameOrder().clone();
         }
 
-        MenuBuilder builder = new MenuBuilder("List of games");
+        MenuBuilder builder = new MenuBuilder(Title.get("game-list-reorder"));
         builder.setSize(MenuSize.FOUR_ROWS);
 
         boolean hasPrev = page > 0;
@@ -49,7 +52,7 @@ public class DgReorderGameList implements Dialog {
             String g = uncommittedChanges.get(i);
 
             if (g != null) {
-                builder.addButton( new GUIButton(GameList.getGame(g).getName(), GameList.getGame(g).getIcon(), "Click to select this game", "Then click the slot you want to swap it with") {
+                builder.addButton( new GUIButton(GameList.getGame(g).getIcon(), Button.get("game-reorder-list-game", "name", GameList.getGame(g).getName())) {
 
                     @Override
                     public void onLeftClick(Player p) {
@@ -77,7 +80,7 @@ public class DgReorderGameList implements Dialog {
             } else {
                 if (playerSelection.containsKey(p.getUniqueId())) {
                     int finalI = i;
-                    builder.addButton (new GUIButton("Move to empty slot", Material.GRAY_STAINED_GLASS_PANE) {
+                    builder.addButton (new GUIButton(Material.GRAY_STAINED_GLASS_PANE, Button.get("game-reorder-list-move-empty")) {
                         @Override
                         public void onLeftClick(Player p) {
                             String oldSlot = playerSelection.get(p.getUniqueId());
@@ -91,9 +94,8 @@ public class DgReorderGameList implements Dialog {
                 }
             }
         }
-
         if (hasPrev) {
-            builder.addButton(new GUIButton("Previous page", Material.RED_STAINED_GLASS_PANE) {
+            builder.addButton(new GUIButton(Material.RED_STAINED_GLASS_PANE, Button.get("previous-page")) {
                 @Override
                 public void onLeftClick(Player p) {
                     show(p, page - 1);
@@ -104,7 +106,8 @@ public class DgReorderGameList implements Dialog {
         }
 
         if (playerSelection.containsKey(p.getUniqueId())) {
-            builder.addButton(new GUIButton(GameList.getGame(playerSelection.get(p.getUniqueId())).getName(), GameList.getGame(playerSelection.get(p.getUniqueId())).getIcon(), "Current selection", "Click to unselect") {
+            Game game = GameList.getGame(playerSelection.get(p.getUniqueId()));
+            builder.addButton(new GUIButton(game.getIcon(), Button.get("game-reorder-list-current-selection", "name", game.getName())) {
                 @Override
                 public void onLeftClick(Player p) {
                     playerSelection.remove(p.getUniqueId());
@@ -112,7 +115,7 @@ public class DgReorderGameList implements Dialog {
                 }
             }, 30);
         } else if (changed) {
-            builder.addButton(new GUIButton("Discard changes", Material.TNT) {
+            builder.addButton(new GUIButton(Material.TNT, Button.get("discard-changes")) {
                 @Override
                 public void onLeftClick(Player p) {
                     playerSelection.clear();
@@ -126,7 +129,7 @@ public class DgReorderGameList implements Dialog {
             builder.addButton(new GUIButton(), 30);
         }
 
-        builder.addButton(new GUIButton("Return to main menu", Material.BARRIER) {
+        builder.addButton(new GUIButton(Material.BARRIER, Button.get("return-to-admin-menu")) {
             @Override
             public void onLeftClick(Player p) {
                 new DgMainAdmin().show(p);
@@ -134,12 +137,12 @@ public class DgReorderGameList implements Dialog {
         }, 31);
 
         if (!playerSelection.containsKey(p.getUniqueId()) && changed) {
-            builder.addButton(new GUIButton("Commit changes", Material.FIREWORK_ROCKET) {
+            builder.addButton(new GUIButton(Material.FIREWORK_ROCKET, Button.get("commit-changes")) {
                 @Override
                 public void onLeftClick(Player p) {
                     playerSelection.clear();
                     GameList.setGameOrder(uncommittedChanges);
-                    p.sendMessage("Changes committed");
+                    Message.send(p, "changes-committed");
                     changed = false;
                     show(p, page);
                 }
@@ -150,7 +153,7 @@ public class DgReorderGameList implements Dialog {
         }
 
         if (!pageIsEmpty) {
-            builder.addButton(new GUIButton("Next page", Material.GREEN_STAINED_GLASS_PANE) {
+            builder.addButton(new GUIButton(Material.GREEN_STAINED_GLASS_PANE, Button.get("next-page")) {
                 @Override
                 public void onLeftClick(Player p) {
                     show(p, page + 1);

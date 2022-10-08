@@ -1,8 +1,7 @@
 package me.diademiemi.dopamine.gui.menu;
 
-import org.bukkit.entity.Player;
-
 import me.diademiemi.dopamine.gui.GUIButton;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 

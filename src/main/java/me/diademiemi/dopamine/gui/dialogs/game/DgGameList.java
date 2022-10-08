@@ -2,14 +2,15 @@ package me.diademiemi.dopamine.gui.dialogs.game;
 
 import me.diademiemi.dopamine.game.Game;
 import me.diademiemi.dopamine.game.GameList;
-import me.diademiemi.dopamine.gui.GUI;
 import me.diademiemi.dopamine.gui.GUIButton;
-import me.diademiemi.dopamine.gui.dialogs.admin.DgMainAdmin;
 import me.diademiemi.dopamine.gui.dialogs.Dialog;
+import me.diademiemi.dopamine.gui.dialogs.admin.DgMainAdmin;
 import me.diademiemi.dopamine.gui.dialogs.game.admin.DgGameConfig;
 import me.diademiemi.dopamine.gui.menu.Menu;
 import me.diademiemi.dopamine.gui.menu.MenuBuilder;
 import me.diademiemi.dopamine.gui.menu.MenuSize;
+import me.diademiemi.dopamine.lang.Button;
+import me.diademiemi.dopamine.lang.Title;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -17,7 +18,7 @@ public class DgGameList implements Dialog {
     @Override
     public Menu create(Player player, Object... args) {
         int page = (int) args[0];
-        MenuBuilder builder = new MenuBuilder("Game List");
+        MenuBuilder builder = new MenuBuilder(Title.get("game-list"));
         builder.setSize(MenuSize.FOUR_ROWS);
 
         boolean hasPrev = page > 0;
@@ -45,7 +46,7 @@ public class DgGameList implements Dialog {
 
 
             if (player.hasPermission("dopamine.config.games")) {
-                builder.addButton( new GUIButton(game.getName(), game.getIcon(), "Right click to configure this game") {
+                builder.addButton( new GUIButton(game.getIcon(), Button.get("game-list-game-admin", "name", game.getName())) {
 
                     @Override
                     public void onLeftClick(Player p) {
@@ -58,7 +59,7 @@ public class DgGameList implements Dialog {
                     }
                 }, i - (page * 27));
             } else {
-                builder.addButton( new GUIButton(game.getName(), game.getIcon()) {
+                builder.addButton( new GUIButton(game.getIcon(), Button.get("game-list-game", "name", game.getName())) {
 
                     @Override
                     public void onLeftClick(Player p) {
@@ -71,7 +72,7 @@ public class DgGameList implements Dialog {
             i++;
         }
         if (hasPrev) {
-            builder.addButton(new GUIButton("Previous page", Material.RED_STAINED_GLASS_PANE) {
+            builder.addButton(new GUIButton(Material.RED_STAINED_GLASS_PANE, Button.get("previous-page")) {
                 @Override
                 public void onLeftClick(Player p) {
                     show(p, page - 1);
@@ -80,17 +81,20 @@ public class DgGameList implements Dialog {
         } else {
             builder.addButton(new GUIButton(), 28);
         }
-
-        builder.addButton(new GUIButton("Return to main menu", Material.BARRIER) {
-            @Override
-            public void onLeftClick(Player p) {
-                close(p);
-                new DgMainAdmin().show(p);
-            }
-        }, 31);
+        if (player.hasPermission("dopamine.config.games")) {
+            builder.addButton(new GUIButton(Material.BARRIER, Button.get("return-to-admin-menu")) {
+                @Override
+                public void onLeftClick(Player p) {
+                    close(p);
+                    new DgMainAdmin().show(p);
+                }
+            }, 31);
+        } else {
+            builder.addButton(new GUIButton(), 31);
+        }
 
         if (hasNext) {
-            builder.addButton(new GUIButton("Next page", Material.GREEN_STAINED_GLASS_PANE) {
+            builder.addButton(new GUIButton(Material.GREEN_STAINED_GLASS_PANE, Button.get("next-page")) {
                 @Override
                 public void onLeftClick(Player p) {
                     show(p, page + 1);

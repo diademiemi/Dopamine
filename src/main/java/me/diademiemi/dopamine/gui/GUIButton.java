@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GUIButton {
@@ -17,22 +18,26 @@ public class GUIButton {
         this.stack.setItemMeta(meta);
     }
 
-    public GUIButton(String name, Material material, String... lore) {
-        stack = new ItemStack(material, 1);
-
-        ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.setDisplayName(name);
-        itemMeta.setLore(Arrays.asList(lore));
-
-        stack.setItemMeta(itemMeta);
+    public GUIButton(Material material, String... texts) {
+        this(material, 1, texts);
     }
 
-    public GUIButton(String name, Material material, int amount, String... lore) {
+    public GUIButton(Material material, int amount, String... texts) {
+        String name;
+        if (texts.length == 0) {
+            name = "Error: No title";
+        } else {
+            name = texts[0];
+        }
+        ArrayList<String> lore = new ArrayList<String>();
+        for (int i = 1; i < texts.length; i++) {
+            lore.add(texts[i]);
+        }
         stack = new ItemStack(material, amount);
 
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.setDisplayName(name);
-        itemMeta.setLore(Arrays.asList(lore));
+        itemMeta.setLore(lore);
 
         stack.setItemMeta(itemMeta);
     }

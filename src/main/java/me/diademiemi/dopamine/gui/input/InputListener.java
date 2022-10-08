@@ -1,10 +1,9 @@
 package me.diademiemi.dopamine.gui.input;
 
+import me.diademiemi.dopamine.Dopamine;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import me.diademiemi.dopamine.Dopamine;
 
 public class InputListener implements Listener {
     @EventHandler

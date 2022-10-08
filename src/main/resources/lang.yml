@@ -1,0 +1,129 @@
+# Make sure all entries are present
+# If you want to add more languages, copy this file and translate it
+prefix: '&l&8[&4Dopamine&8] &r'
+messages:
+  no-permission: "&cYou don't have permission to do that."
+  no-console: "&cYou can't do that from the console."
+  unknown-arguments: "&cUnknown arguments. Type &4/{{ label }} help &cfor help."
+  no-selection: "&cYou need to select a cuboid region first."
+  err-setting-player-sel: "&cAn error occurred while setting your selection."
+  changes-committed: "&aYour changes have been committed."
+  config-saved-to-disk: "&aThe configuration has been saved to disk."
+  config-game-warp-set: "&aThe game's warp has been set."
+  config-game-region-set: "&aThe game's region has been set."
+  input-create-game-name: "&aPlease enter the name of the new game."
+titles:
+  game-list: "Games"
+  game-list-reorder: "Reorder games"
+  set-icon: "Set Icon"
+  admin-main-menu: "Admin Menu"
+  confirmation: "Confirmation"
+  game-config: "Config: {{ name }}"
+buttons:
+  # Generic
+  discard-changes:
+    title: "Discard changes"
+  commit-changes:
+    title: "Commit changes"
+  previous-page:
+    title: "Previous page"
+  next-page:
+    title: "Next page"
+  # Users
+  game-list:
+    title: "Game list"
+    lore:
+      - "Click to open the game list"
+  return-game-list:
+    title: "Return to game list"
+    lore:
+      - "Click to return to the game list"
+  game-list-game:
+    title: "{{ name }}"
+
+  # Admin
+  create-game:
+    title: "Create a new game"
+    lore:
+      - "Click to create a new game"
+  create-game-cancel:
+    title: "Cancel"
+    lore:
+      - "Return to main menu"
+  create-game-confirm:
+    title: "Confirm"
+    lore:
+      - "Create a new game with the name {{ name }}"
+  save-config:
+    title: "Save config"
+    lore:
+        - "Save the config to the file"
+  return-to-game-config:
+    title: "Return to game configuration"
+  return-to-admin-menu:
+    title: "Return to admin menu"
+  game-list-game-admin:
+    title: "{{ name }}"
+    lore:
+      - "Right click to configure"
+
+  # Admin - Game config
+  config-game-info:
+    title: "Game info"
+    lore:
+      - "Click to view a summary of this games set options"
+  config-game-icon:
+    title: "Game icon"
+    lore:
+      - "Click to set the icon for this game"
+  config-game-warp:
+    title: "Game warp"
+    lore:
+      - "Click to set the warp for this game to your current location"
+      - "X: {{ x }}, Y: {{ y }}, Z: {{ z }}"
+  config-game-region-set:
+    title: "Set the region of this game"
+    lore:
+      - "Click to set the region for this game to your current WorldEdit selection"
+  config-game-region-err-no-sel:
+    title: "Set the region of this game"
+    lore:
+      - "&4Can't set region because you don't have a WorldEdit selection"
+  config-game-region-err-overlaps:
+    title: "Set the region of this game"
+    lore:
+      - "&4Can't set region because your selection overlaps with {{ name }}"
+  config-game-icon-current:
+    title: "Current icon"
+    lore:
+      - "Drag an item into this slot to set it as the game's icon."
+  # Admin - Game config - Game info
+  describe-region:
+    title: "Region"
+    lore:
+      - "X1: {{ x1 }}, Y1: {{ y1 }}, Z1: {{ z1 }}"
+      - "X2: {{ x2 }}, Y2: {{ y2 }}, Z2: {{ z2 }}"
+  describe-no-region:
+    title: "Region"
+    lore:
+      - "No region set"
+  describe-icon:
+    title: "Current icon"
+    lore:
+      - "Current icon: {{ icon }}"
+  game-reorder-list:
+    title: "Reorder games"
+    lore:
+      - "Click to reorder games"
+  # Admin - Reorder games
+  game-reorder-list-game:
+    title: "{{ name }}"
+    lore:
+      - "Click to select this game"
+      - "Then click the slot you want to swap it with"
+  game-reorder-list-move-empty:
+    title: "Move to empty slot"
+  game-reorder-list-current-selection:
+    title: "Current selection: {{ name }}"
+    lore:
+      - "Click to deselect"

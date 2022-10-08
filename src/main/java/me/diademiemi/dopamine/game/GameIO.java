@@ -1,15 +1,13 @@
-package me.diademiemi.dopamine.config;
+package me.diademiemi.dopamine.game;
 
 import me.diademiemi.dopamine.Dopamine;
-import me.diademiemi.dopamine.game.Game;
-import me.diademiemi.dopamine.game.GameList;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Config {
+public class GameIO {
 
     private static File configFile;
 

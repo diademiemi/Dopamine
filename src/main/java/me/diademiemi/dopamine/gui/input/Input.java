@@ -1,5 +1,6 @@
 package me.diademiemi.dopamine.gui.input;
 
+import me.diademiemi.dopamine.lang.Message;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public abstract class Input {
 
     public Input(Player player, String preamble) {
         this.player = player;
-        player.sendMessage(preamble);
+        Message.send(player, preamble);
         addInput(this);
     }
 

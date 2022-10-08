@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import me.diademiemi.dopamine.lang.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -131,7 +132,7 @@ public class Game implements ConfigurationSerializable {
         try {
             selection = (CuboidRegion) worldEdit.getSession(player).getSelection(worldEdit.getSession(player).getSelectionWorld());
         } catch (Exception e) {
-            player.sendMessage("No active WorldEdit selection");
+            Message.send(player, "no-selection");
             return;
         }
 
